@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.875rem;
+
+    /* Dark cyberpunk palette */
+    --background: 0.07 0.005 280;
+    --foreground: 0.96 0.005 280;
+    --card: 0.11 0.01 275;
+    --card-foreground: 0.96 0.005 280;
+    --popover: 0.11 0.01 275;
+    --popover-foreground: 0.96 0.005 280;
+    --primary: 0.58 0.22 290;
+    --primary-foreground: 0.98 0 0;
+    --secondary: 0.15 0.015 275;
+    --secondary-foreground: 0.75 0.04 280;
+    --muted: 0.13 0.01 275;
+    --muted-foreground: 0.55 0.04 280;
+    --accent: 0.75 0.22 195;
+    --accent-foreground: 0.05 0 0;
+    --destructive: 0.62 0.22 27;
+    --destructive-foreground: 0.98 0 0;
+    --border: 0.2 0.02 275;
+    --input: 0.15 0.015 275;
+    --ring: 0.58 0.22 290;
+    --chart-1: 0.58 0.22 290;
+    --chart-2: 0.75 0.22 195;
+    --chart-3: 0.55 0.24 335;
+    --chart-4: 0.7 0.18 150;
+    --chart-5: 0.65 0.2 40;
+    --sidebar: 0.09 0.007 275;
+    --sidebar-foreground: 0.96 0.005 280;
+    --sidebar-primary: 0.58 0.22 290;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.15 0.015 275;
+    --sidebar-accent-foreground: 0.75 0.04 280;
+    --sidebar-border: 0.2 0.02 275;
+    --sidebar-ring: 0.58 0.22 290;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    background-color: #080808;
+  }
+}
+
+@keyframes hero-float {
+  0% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(3deg) translateY(0px);
+  }
+  25% {
+    transform: perspective(1000px) rotateX(-1deg) rotateY(4deg) translateY(-6px);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg)
+      translateY(-10px);
+  }
+  75% {
+    transform: perspective(1000px) rotateX(3deg) rotateY(2deg) translateY(-4px);
+  }
+  100% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(3deg) translateY(0px);
+  }
+}
+
+@keyframes flip-out {
+  from {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  to {
+    transform: perspective(1000px) rotateY(90deg);
+  }
+}
+
+@keyframes flip-in {
+  from {
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 40px
+      rgba(124, 58, 237, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 0 60px
+      rgba(0, 212, 255, 0.2);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero-image-float {
+  animation: hero-float 8s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.hero-image-float.flip-paused {
+  animation-play-state: paused;
+}
+
+.hero-img-flip-out {
+  animation: flip-out 0.25s ease-in forwards;
+}
+
+.hero-img-flip-in {
+  animation: flip-in 0.25s ease-out forwards;
+}
