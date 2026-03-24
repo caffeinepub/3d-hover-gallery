@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -402,17 +401,6 @@ const TABS: TabData[] = [
   },
 ];
 
-// ─── Gradient meshes per tab ──────────────────────────────────────────────────
-const MESH_GRADIENTS = [
-  "radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.4) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.3) 0%, transparent 55%), radial-gradient(ellipse at 60% 80%, rgba(225,29,143,0.25) 0%, transparent 50%)",
-  "radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.4) 0%, transparent 60%), radial-gradient(ellipse at 70% 70%, rgba(124,58,237,0.3) 0%, transparent 55%)",
-  "radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.35) 0%, transparent 55%), radial-gradient(ellipse at 75% 60%, rgba(0,212,255,0.3) 0%, transparent 50%)",
-  "radial-gradient(ellipse at 50% 20%, rgba(239,68,68,0.3) 0%, transparent 55%), radial-gradient(ellipse at 30% 70%, rgba(124,58,237,0.35) 0%, transparent 50%)",
-  "radial-gradient(ellipse at 60% 30%, rgba(251,191,36,0.25) 0%, transparent 55%), radial-gradient(ellipse at 20% 70%, rgba(225,29,143,0.4) 0%, transparent 50%)",
-  "radial-gradient(ellipse at 40% 50%, rgba(0,212,255,0.4) 0%, transparent 60%), radial-gradient(ellipse at 80% 30%, rgba(124,58,237,0.3) 0%, transparent 50%)",
-  "radial-gradient(ellipse at 25% 60%, rgba(52,211,153,0.35) 0%, transparent 55%), radial-gradient(ellipse at 70% 40%, rgba(0,212,255,0.3) 0%, transparent 50%)",
-];
-
 // ─── Metric split ─────────────────────────────────────────────────────────────
 function parseMetric(metric: string): { highlight: string; rest: string } {
   const match = metric.match(/^([+\d.k×%★]+(?:\s+\w+)?)\s*(.*)/);
@@ -426,107 +414,64 @@ function parseMetric(metric: string): { highlight: string; rest: string } {
 }
 
 // ─── FeaturedCard ─────────────────────────────────────────────────────────────
-function FeaturedCard({ card, tabIdx }: { card: CardData; tabIdx: number }) {
+function FeaturedCard({ card }: { card: CardData }) {
   const { highlight, rest } = parseMetric(card.metric);
-  const mesh = MESH_GRADIENTS[tabIdx % MESH_GRADIENTS.length];
-
   return (
     <div
-      className="group flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-500"
+      className="flex flex-col h-full rounded-2xl overflow-hidden"
       style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        backdropFilter: "blur(12px)",
-        boxShadow: "0 0 0 rgba(124,58,237,0)",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 0 40px rgba(124,58,237,0.18), 0 0 80px rgba(0,212,255,0.07)";
-        (e.currentTarget as HTMLDivElement).style.borderColor =
-          "rgba(124,58,237,0.35)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 0 0 rgba(124,58,237,0)";
-        (e.currentTarget as HTMLDivElement).style.borderColor =
-          "rgba(255,255,255,0.08)";
+        background: "#fff",
+        border: "2px solid #7c3aed",
+        boxShadow: "0 4px 24px rgba(124,58,237,0.10)",
       }}
     >
-      {/* Animated gradient mesh image area */}
+      {/* Top accent bar */}
       <div
-        className="relative w-full flex-shrink-0 overflow-hidden"
-        style={{ height: 200, background: "#0d0d14" }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{ background: mesh, opacity: 0.9 }}
-        />
-        {/* Noise texture overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E\")",
-            backgroundSize: "200px 200px",
-          }}
-        />
-        {/* Grid lines */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        {/* Category badge */}
-        <div className="absolute bottom-4 left-4">
+        style={{
+          height: 4,
+          background: "linear-gradient(90deg,#7c3aed,#6366f1)",
+        }}
+      />
+
+      <div className="flex flex-col flex-1 p-7 gap-4">
+        {/* Category + FEATURED badge */}
+        <div className="flex items-center justify-between gap-2">
           <span
-            className="text-[9px] font-bold tracking-[0.2em] px-2.5 py-1 rounded-full"
-            style={{
-              background: "rgba(0,0,0,0.5)",
-              color: "rgba(0,212,255,0.9)",
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(0,212,255,0.2)",
-            }}
+            className="text-[10px] font-bold tracking-[0.18em] uppercase"
+            style={{ color: "#7c3aed" }}
           >
             {card.category}
           </span>
+          <span
+            className="text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full"
+            style={{ background: "#7c3aed", color: "#fff" }}
+          >
+            FEATURED
+          </span>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-6 gap-3">
         <h3
           className="text-[22px] font-bold leading-tight"
-          style={{ color: "#fff", letterSpacing: "-0.02em" }}
+          style={{ color: "#111", letterSpacing: "-0.02em" }}
         >
           {card.title}
         </h3>
-        <p
-          className="text-sm leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.5)" }}
-        >
+
+        <p className="text-sm leading-relaxed" style={{ color: "#555" }}>
           {card.desc}
         </p>
 
-        <ul className="flex flex-col gap-1.5 my-1">
+        <ul className="flex flex-col gap-2">
           {card.features.map((f) => (
             <li
               key={f}
-              className="flex items-start gap-2 text-xs"
-              style={{ color: "rgba(255,255,255,0.45)" }}
+              className="flex items-start gap-2 text-sm"
+              style={{ color: "#333" }}
             >
               <span
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #00d4ff)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontWeight: 700,
-                  flexShrink: 0,
-                }}
+                style={{ color: "#7c3aed", fontWeight: 700, flexShrink: 0 }}
               >
-                ▸
+                ✓
               </span>
               <span>{f}</span>
             </li>
@@ -535,26 +480,15 @@ function FeaturedCard({ card, tabIdx }: { card: CardData; tabIdx: number }) {
 
         <div className="flex-1" />
 
-        {/* Metric pill */}
+        {/* Metric */}
         <div
-          className="rounded-xl px-4 py-3 mt-2"
-          style={{
-            background: "rgba(124,58,237,0.1)",
-            border: "1px solid rgba(124,58,237,0.25)",
-            boxShadow: "inset 0 1px 0 rgba(124,58,237,0.15)",
-          }}
+          className="rounded-xl px-4 py-3"
+          style={{ background: "#f3f0ff", border: "1px solid #ddd6fe" }}
         >
-          <p
-            className="text-xs leading-snug"
-            style={{ color: "rgba(255,255,255,0.6)" }}
-          >
+          <p className="text-sm leading-snug" style={{ color: "#555" }}>
             <span
-              className="font-bold text-sm mr-1"
-              style={{
-                background: "linear-gradient(135deg, #a855f7, #00d4ff)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="font-bold text-base mr-1"
+              style={{ color: "#7c3aed" }}
             >
               {highlight}
             </span>
@@ -564,8 +498,8 @@ function FeaturedCard({ card, tabIdx }: { card: CardData; tabIdx: number }) {
 
         <a
           href="/#contact"
-          className="text-xs font-semibold mt-2 inline-flex items-center gap-1 transition-opacity hover:opacity-70"
-          style={{ color: "#00d4ff" }}
+          className="text-sm font-semibold inline-flex items-center gap-1"
+          style={{ color: "#7c3aed" }}
           data-ocid="spec.featured_card.primary_button"
         >
           {card.cta}
@@ -576,76 +510,35 @@ function FeaturedCard({ card, tabIdx }: { card: CardData; tabIdx: number }) {
 }
 
 // ─── StandardCard ─────────────────────────────────────────────────────────────
-function StandardCard({
-  card,
-  tabIdx,
-  cardIdx,
-}: { card: CardData; tabIdx: number; cardIdx: number }) {
+function StandardCard({ card }: { card: CardData }) {
   const { highlight, rest } = parseMetric(card.metric);
-  const mesh = MESH_GRADIENTS[(tabIdx + cardIdx) % MESH_GRADIENTS.length];
-
   return (
     <div
-      className="group flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-500"
+      className="flex flex-col h-full rounded-xl overflow-hidden"
       style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        backdropFilter: "blur(12px)",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 0 32px rgba(0,212,255,0.12)";
-        (e.currentTarget as HTMLDivElement).style.borderColor =
-          "rgba(0,212,255,0.2)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
-        (e.currentTarget as HTMLDivElement).style.borderColor =
-          "rgba(255,255,255,0.07)";
+        background: "#fff",
+        border: "1px solid #e5e7eb",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
       }}
     >
-      {/* Gradient mesh image area */}
-      <div
-        className="relative w-full flex-shrink-0 overflow-hidden"
-        style={{ height: 130, background: "#0d0d14" }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{ background: mesh, opacity: 0.85 }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <div className="absolute bottom-3 left-3">
-          <span
-            className="text-[9px] font-bold tracking-[0.15em] px-2 py-0.5 rounded-full"
-            style={{
-              background: "rgba(0,0,0,0.55)",
-              color: "rgba(0,212,255,0.85)",
-              backdropFilter: "blur(6px)",
-              border: "1px solid rgba(0,212,255,0.15)",
-            }}
-          >
-            {card.category}
-          </span>
-        </div>
-      </div>
+      <div className="flex flex-col flex-1 p-5 gap-3">
+        <span
+          className="text-[10px] font-bold tracking-[0.15em] uppercase"
+          style={{ color: "#6b7280" }}
+        >
+          {card.category}
+        </span>
 
-      <div className="flex flex-col flex-1 p-5 gap-2.5">
         <h3
           className="text-[17px] font-bold leading-snug"
-          style={{ color: "#fff", letterSpacing: "-0.02em" }}
+          style={{ color: "#111", letterSpacing: "-0.02em" }}
         >
           {card.title}
         </h3>
+
         <p
           className="text-xs leading-relaxed flex-1"
-          style={{ color: "rgba(255,255,255,0.45)" }}
+          style={{ color: "#6b7280" }}
         >
           {card.desc}
         </p>
@@ -653,23 +546,10 @@ function StandardCard({
         {/* Metric */}
         <div
           className="rounded-lg px-3 py-2.5"
-          style={{
-            background: "rgba(0,212,255,0.07)",
-            border: "1px solid rgba(0,212,255,0.18)",
-          }}
+          style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}
         >
-          <p
-            className="text-xs leading-snug"
-            style={{ color: "rgba(255,255,255,0.55)" }}
-          >
-            <span
-              className="font-bold mr-1"
-              style={{
-                background: "linear-gradient(135deg, #a855f7, #00d4ff)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+          <p className="text-xs leading-snug" style={{ color: "#555" }}>
+            <span className="font-bold mr-1" style={{ color: "#7c3aed" }}>
               {highlight}
             </span>
             {rest}
@@ -678,8 +558,8 @@ function StandardCard({
 
         <a
           href="/#contact"
-          className="text-xs font-semibold transition-opacity hover:opacity-70 inline-flex items-center gap-1"
-          style={{ color: "#00d4ff" }}
+          className="text-xs font-semibold inline-flex items-center gap-1"
+          style={{ color: "#7c3aed" }}
           data-ocid="spec.standard_card.primary_button"
         >
           {card.cta}
@@ -693,86 +573,57 @@ function StandardCard({
 function WideCard({ card }: { card: CardData }) {
   return (
     <div
-      className="relative rounded-2xl overflow-hidden p-px"
+      className="relative flex flex-col md:flex-row items-center gap-6 rounded-2xl p-8"
       style={{
-        background:
-          "linear-gradient(135deg, rgba(124,58,237,0.7), rgba(0,212,255,0.5), rgba(225,29,143,0.5))",
+        background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)",
       }}
     >
-      <div
-        className="relative flex flex-col md:flex-row items-center gap-6 rounded-2xl p-8"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(20,8,40,0.95), rgba(8,16,32,0.95))",
-        }}
-      >
-        {/* Subtle inner glow */}
+      {/* Left: text */}
+      <div className="flex-1 min-w-0">
+        <p
+          className="text-[10px] font-bold tracking-[0.2em] mb-3 uppercase"
+          style={{ color: "rgba(167,139,250,0.8)" }}
+        >
+          {card.category}
+        </p>
+        <h3
+          className="text-2xl md:text-3xl font-bold mb-3"
+          style={{ color: "#fff", letterSpacing: "-0.03em" }}
+        >
+          {card.title}
+        </h3>
+        <p
+          className="text-sm leading-relaxed"
+          style={{ color: "rgba(255,255,255,0.65)" }}
+        >
+          {card.desc}
+        </p>
+      </div>
+
+      {/* Right: stat + CTA */}
+      <div className="flex-shrink-0 flex flex-col items-center md:items-end gap-4">
         <div
-          className="absolute inset-0 rounded-2xl pointer-events-none"
+          className="rounded-xl px-5 py-3"
           style={{
-            background:
-              "radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(0,212,255,0.08) 0%, transparent 60%)",
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.2)",
           }}
-        />
-
-        {/* Left: text */}
-        <div className="flex-1 min-w-0 relative z-10">
+        >
           <p
-            className="text-[9px] font-bold tracking-[0.25em] mb-3"
-            style={{ color: "rgba(0,212,255,0.6)" }}
+            className="text-xs font-medium text-center"
+            style={{ color: "rgba(255,255,255,0.85)" }}
           >
-            {card.category}
-          </p>
-          <h3
-            className="text-2xl md:text-3xl font-bold mb-3"
-            style={{
-              background:
-                "linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: "-0.03em",
-            }}
-          >
-            {card.title}
-          </h3>
-          <p
-            className="text-sm leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.5)" }}
-          >
-            {card.desc}
+            {card.metric}
           </p>
         </div>
-
-        {/* Right: stat + CTA */}
-        <div className="flex-shrink-0 flex flex-col items-center md:items-end gap-4 relative z-10">
-          <div
-            className="rounded-xl px-5 py-3"
-            style={{
-              background: "rgba(124,58,237,0.15)",
-              border: "1px solid rgba(124,58,237,0.3)",
-              boxShadow: "0 0 20px rgba(124,58,237,0.1)",
-            }}
-          >
-            <p
-              className="text-xs font-medium text-center"
-              style={{ color: "rgba(255,255,255,0.7)" }}
-            >
-              {card.metric}
-            </p>
-          </div>
-          <a
-            href="/#contact"
-            className="text-sm font-bold inline-flex items-center gap-2 px-6 py-2.5 rounded-full transition-all hover:brightness-110"
-            style={{
-              background: "linear-gradient(135deg, #7c3aed, #e11d8f)",
-              color: "#fff",
-              boxShadow: "0 0 20px rgba(124,58,237,0.3)",
-            }}
-            data-ocid="spec.offshore.primary_button"
-          >
-            {card.cta}
-          </a>
-        </div>
+        <a
+          href="/#contact"
+          className="text-sm font-bold inline-flex items-center gap-2 px-6 py-2.5 rounded-full transition-opacity hover:opacity-90"
+          style={{ background: "#7c3aed", color: "#fff" }}
+          data-ocid="spec.offshore.primary_button"
+        >
+          {card.cta}
+        </a>
       </div>
     </div>
   );
@@ -787,90 +638,31 @@ export function SpecialisationsSection() {
   const standardCards = tabData.cards.filter((c) => !c.featured && !c.wide);
   const wideCard = tabData.cards.find((c) => c.wide);
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    show: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1] as const,
-        delay: i * 0.08,
-      },
-    }),
-    exit: {
-      opacity: 0,
-      y: -12,
-      transition: { duration: 0.22, ease: "easeIn" as const },
-    },
-  };
-
   return (
     <section
-      className="relative w-full py-24 px-5 md:px-10 lg:px-16 overflow-hidden"
-      style={{ background: "#080808" }}
+      className="w-full py-20 px-5 md:px-10 lg:px-16"
+      style={{ background: "#f8f9fa" }}
       data-ocid="spec.section"
     >
-      {/* Background atmosphere */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 15% 50%, rgba(124,58,237,0.07) 0%, transparent 50%), radial-gradient(ellipse at 85% 20%, rgba(0,212,255,0.05) 0%, transparent 50%), radial-gradient(ellipse at 50% 90%, rgba(225,29,143,0.04) 0%, transparent 50%)",
-        }}
-      />
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto">
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="mb-14">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <div
-              className="w-1 h-4 rounded-full"
-              style={{
-                background: "linear-gradient(180deg, #7c3aed, #00d4ff)",
-              }}
-            />
-            <p
-              className="text-[11px] font-bold tracking-[0.28em]"
-              style={{ color: "rgba(0,212,255,0.7)" }}
-            >
-              02 — WORK
-            </p>
+        <div className="mb-12">
+          <div
+            className="inline-block text-xs font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-5"
+            style={{ background: "#ede9fe", color: "#7c3aed" }}
+          >
+            Our Specialisations
           </div>
-
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-              <h2
-                className="text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight"
-                style={{ color: "#fff" }}
-              >
-                Problems solved.
-              </h2>
-              <h2
-                className="text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #a855f7 0%, #e11d8f 50%, #00d4ff 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontStyle: "italic",
-                }}
-              >
-                Results proven.
-              </h2>
-            </div>
+            <h2
+              className="text-4xl md:text-5xl font-bold leading-tight"
+              style={{ color: "#111", letterSpacing: "-0.03em" }}
+            >
+              What We Build
+            </h2>
             <p
-              className="text-sm max-w-xs leading-relaxed sm:text-right"
-              style={{ color: "rgba(255,255,255,0.4)" }}
+              className="text-sm max-w-xs leading-relaxed"
+              style={{ color: "#6b7280" }}
             >
               Six specialisations. One obsession: shipping work that moves the
               needle.
@@ -880,8 +672,8 @@ export function SpecialisationsSection() {
 
         {/* ── Tab bar ─────────────────────────────────────────────────────── */}
         <div
-          className="flex items-end gap-1 flex-wrap mb-12 border-b"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
+          className="flex items-end gap-0 flex-wrap mb-10 border-b"
+          style={{ borderColor: "#e5e7eb" }}
           role="tablist"
           aria-label="Specialisations"
           data-ocid="spec.tab"
@@ -895,39 +687,25 @@ export function SpecialisationsSection() {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => setActiveTab(i)}
-                className="relative inline-flex items-center gap-2 px-4 pb-4 pt-2 text-[15px] font-semibold transition-all focus:outline-none"
+                className="relative inline-flex items-center gap-2 px-5 pb-3 pt-2 text-[15px] font-semibold transition-colors focus:outline-none"
                 style={{
-                  color: isActive ? "#fff" : "rgba(255,255,255,0.35)",
-                  letterSpacing: "-0.01em",
+                  color: isActive ? "#7c3aed" : "#6b7280",
+                  borderBottom: isActive
+                    ? "2px solid #7c3aed"
+                    : "2px solid transparent",
+                  marginBottom: "-1px",
+                  background: "transparent",
                 }}
                 data-ocid={`spec.tab.${i + 1}`}
               >
                 {tab.label}
                 {tab.isNew && (
                   <span
-                    className="text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded"
-                    style={{
-                      background: "rgba(225,29,143,0.2)",
-                      color: "#e11d8f",
-                      border: "1px solid rgba(225,29,143,0.3)",
-                    }}
+                    className="text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded-full"
+                    style={{ background: "#fce7f3", color: "#db2777" }}
                   >
                     NEW
                   </span>
-                )}
-                {/* Active indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, #7c3aed, #e11d8f, #00d4ff)",
-                      boxShadow:
-                        "0 0 8px rgba(124,58,237,0.6), 0 0 16px rgba(0,212,255,0.3)",
-                    }}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                  />
                 )}
               </button>
             );
@@ -935,83 +713,45 @@ export function SpecialisationsSection() {
         </div>
 
         {/* ── Card grid ───────────────────────────────────────────────────── */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-            className="flex flex-col gap-4"
-          >
-            {/* Top row: Featured (left) + 2 standard (right) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {featuredCard && (
-                <motion.div
-                  custom={0}
-                  variants={cardVariants}
-                  className="md:col-span-1"
-                >
-                  <FeaturedCard card={featuredCard} tabIdx={activeTab} />
-                </motion.div>
-              )}
-              <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {standardCards.slice(0, 2).map((card, idx) => (
-                  <motion.div
-                    key={card.title}
-                    custom={idx + 1}
-                    variants={cardVariants}
-                  >
-                    <StandardCard
-                      card={card}
-                      tabIdx={activeTab}
-                      cardIdx={idx + 1}
-                    />
-                  </motion.div>
-                ))}
+        <div className="flex flex-col gap-4">
+          {/* Top row: Featured (left) + 2 standard (right) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {featuredCard && (
+              <div className="md:col-span-1">
+                <FeaturedCard card={featuredCard} />
               </div>
-            </div>
-
-            {/* Wide card */}
-            {wideCard && (
-              <motion.div custom={3} variants={cardVariants}>
-                <WideCard card={wideCard} />
-              </motion.div>
             )}
-          </motion.div>
-        </AnimatePresence>
+            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {standardCards.slice(0, 2).map((card) => (
+                <StandardCard key={card.title} card={card} />
+              ))}
+            </div>
+          </div>
+
+          {/* Wide card */}
+          {wideCard && <WideCard card={wideCard} />}
+        </div>
 
         {/* ── Bottom CTA bar ──────────────────────────────────────────────── */}
         <div
           className="flex flex-col sm:flex-row items-center justify-between gap-6 mt-16 pt-10"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+          style={{ borderTop: "1px solid #e5e7eb" }}
         >
           <div>
             <p
               className="text-2xl md:text-3xl font-bold"
-              style={{ color: "#fff", letterSpacing: "-0.03em" }}
+              style={{ color: "#111", letterSpacing: "-0.03em" }}
             >
               Have a similar challenge?{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #a855f7, #e11d8f)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontStyle: "italic",
-                }}
-              >
+              <span style={{ color: "#7c3aed", fontStyle: "italic" }}>
                 Let's build it.
               </span>
             </p>
           </div>
           <a
             href="/#contact"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold transition-all hover:brightness-110"
-            style={{
-              background: "linear-gradient(135deg, #7c3aed, #e11d8f)",
-              color: "#fff",
-              boxShadow:
-                "0 0 30px rgba(124,58,237,0.35), 0 0 60px rgba(225,29,143,0.15)",
-            }}
+            className="flex-shrink-0 inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold transition-opacity hover:opacity-90"
+            style={{ background: "#7c3aed", color: "#fff" }}
             data-ocid="spec.cta.primary_button"
           >
             Start a project →
